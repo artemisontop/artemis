@@ -25,13 +25,14 @@ local Window = Rayfield:CreateWindow({
        Key = "https://pastebin.com/raw/2EFtX1V9"
     }
  }) 
- local MainTab = Window:CreateTab("main", 4483362458)
- local TPsTab = Window:CreateTab("TPs", 4483362458)
+ local MainTab = Window:CreateTab("main", 933851091)
+ local EggTab = Window:CreateTab("eggs", 7939410236)
  local MiscTab = Window:CreateTab("misc", 4483362458)
  --> VALUES <--
  getgenv().autoFarm = false
  getgenv().autoCollect = false
- getgenv().autoNextWrld = false
+getgenv().autoHatch = false
+getgenv().eggSelected = "Cracked Egg"
  getgenv().area = "Town"
  local Client = require(game.ReplicatedStorage.Library.Client)
  local Library = require(game.ReplicatedStorage.Library)
@@ -71,26 +72,31 @@ local autoclick = MainTab:CreateToggle({
     Name = "auto farm",
     CurrentValue = false,
     Callback = function(Value)
-        getgenv().autoClick = Value
+        getgenv().autoFarm = Value
         autoFarm()
     end,
  })
- local autoSnowflake = MainTab:CreateToggle({
-    Name = "auto collect",
+ local autoCollect = MainTab:CreateToggle({
+    Name = "auto collect orbs",
     CurrentValue = false,
     Callback = function(state)
         getgenv().autoCollect=state
     end,
  })
- local Label = MainTab:CreateLabel("this feature is in beta. so far this will only take you to one house.")
-
- local ShopButton = TPsTab:CreateButton({
-    Name = "Shop TP",
-    Callback = function()
-local args = {
-[1] = "Teleport",
-[2] = "Buy"
-} game:GetService("ReplicatedStorage").NetworkRemoteEvent:FireServer(unpack(args))
+ local eggSelect = EggTab:CreateDropdown({
+    Name = "Egg Selector",
+    Options = {"Cracked Egg","Spotted Egg","Golden Cracked Egg","Golden Spotted Egg"},
+    CurrentOption = "Cracked Egg",
+    Flag = "eggSelector", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(egg)
+   getgenv().eggSelected = egg
+    end,
+ })
+ local autoHatch = EggTab:CreateToggle({
+    Name = "auto hatch (select egg from dropdown above)",
+    CurrentValue = false,
+    Callback = function(state)
+        getgenv().autoHatch=state
     end,
  })
  local FOV = MiscTab:CreateSlider({

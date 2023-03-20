@@ -5,9 +5,9 @@
         LoadingTitle = "artemis",
         LoadingSubtitle = "arsenal (beta)",
         ConfigurationSaving = {
-           Enabled = false,
-           FolderName = nil, -- Create a custom folder for your hub/game
-           FileName = "ArtemisHub"
+           Enabled = true,
+           FolderName = "ArtemisHub", -- Create a custom folder for your hub/game
+           FileName = "ArtemisArsenal"
         },
         Discord = {
            Enabled = false,
@@ -26,7 +26,7 @@
         }
      }) 
      local MainTab = Window:CreateTab("main", 4483362458)
-     local VisualTab = Window:CreateTab("visual", 4483362458)
+     local VisualTab = Window:CreateTab("visual", 6523858394)
      local MiscTab = Window:CreateTab("misc", 4483362458)
      --> VALUES <--
      getgenv().silentAim = false
@@ -40,118 +40,24 @@ local worldToViewportPoint = CurrentCamera.worldToViewportPoint
 
 local HeadOff = Vector3.new(0, 0.5, 0)
 local LegOff = Vector3.new(0,3,0)
+local Sense = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Sirius/request/library/sense/source.lua'))()
+Sense.teamSettings.enemy.enabled = true
+Sense.teamSettings.enemy.box = true
+Sense.teamSettings.enemy.boxColor[1] = Color3.new(0, 0.25, 0.75)
 
-for i,v in pairs(game.Players:GetChildren()) do
-    local BoxOutline = Drawing.new("Square")
-    BoxOutline.Visible = false
-    BoxOutline.Color = Color3.new(0,0,0)
-    BoxOutline.Thickness = 3
-    BoxOutline.Transparency = 1
-    BoxOutline.Filled = false
-
-    local Box = Drawing.new("Square")
-    Box.Visible = false
-    Box.Color = Color3.new(1,1,1)
-    Box.Thickness = 1
-    Box.Transparency = 1
-    Box.Filled = false
-
-    function boxesp()
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 then
-                local Vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
-
-                local RootPart = v.Character.HumanoidRootPart
-                local Head = v.Character.Head
-                local RootPosition, RootVis = worldToViewportPoint(CurrentCamera, RootPart.Position)
-                local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + HeadOff)
-                local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - LegOff)
-
-                if onScreen then
-                    BoxOutline.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
-                    BoxOutline.Visible = true
-
-                    Box.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
-                    Box.Visible = true
-
-                    if v.TeamColor == lplr.TeamColor then
-                        BoxOutline.Visible = false
-                        Box.Visible = false
-                    else
-                        BoxOutline.Visible = true
-                        Box.Visible = true
-                    end
-
-                else
-                    BoxOutline.Visible = false
-                    Box.Visible = false
-                end
-            else
-                BoxOutline.Visible = false
-                Box.Visible = false
-            end
-        end)
+-- 3. Load the esp. It doesn't really matter where you put this, but it's recommended you put it at the end of your script.
+while true do
+    if getgenv().esp then
+        Sense.Load()
+    else
+        Sense.Unload()
     end
-    coroutine.wrap(boxesp)()
+    task.wait(0.0001)
 end
 
-game.Players.PlayerAdded:Connect(function(v)
-    local BoxOutline = Drawing.new("Square")
-    BoxOutline.Visible = false
-    BoxOutline.Color = Color3.new(0,0,0)
-    BoxOutline.Thickness = 3
-    BoxOutline.Transparency = 1
-    BoxOutline.Filled = false
 
-    local Box = Drawing.new("Square")
-    Box.Visible = false
-    Box.Color = Color3.new(1,1,1)
-    Box.Thickness = 1
-    Box.Transparency = 1
-    Box.Filled = false
 
-    function boxesp()
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health > 0 then
-                local Vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
 
-                local RootPart = v.Character.HumanoidRootPart
-                local Head = v.Character.Head
-                local RootPosition, RootVis = worldToViewportPoint(CurrentCamera, RootPart.Position)
-                local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + HeadOff)
-                local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - LegOff)
-
-                if onScreen then
-                    BoxOutline.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    BoxOutline.Position = Vector2.new(RootPosition.X - BoxOutline.Size.X / 2, RootPosition.Y - BoxOutline.Size.Y / 2)
-                    BoxOutline.Visible = true
-
-                    Box.Size = Vector2.new(1000 / RootPosition.Z, HeadPosition.Y - LegPosition.Y)
-                    Box.Position = Vector2.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 2)
-                    Box.Visible = true
-
-                    if v.TeamColor == lplr.TeamColor then
-                        BoxOutline.Visible = false
-                        Box.Visible = false
-                    else
-                        BoxOutline.Visible = true
-                        Box.Visible = true
-                    end
-
-                else
-                    BoxOutline.Visible = false
-                    Box.Visible = false
-                end
-            else
-                BoxOutline.Visible = false
-                Box.Visible = false
-            end
-        end)
-    end
-    coroutine.wrap(boxesp)()
-end)
     local tracerState = false
     local Players = game:GetService("Players"):GetChildren()
     local localPlayer = game.Players.LocalPlayer
@@ -316,7 +222,7 @@ end)
         Name = "ESP",
         CurrentValue = false,
         Callback = function(Value)
-                getgenv().boxESP = Value
+                getgenv().esp = Value
         end,
      })
      local Tracer = VisualTab:CreateToggle({
