@@ -22,3 +22,12 @@
          \/____/                  \|___|                                    \/____/                  \/____/                  \/____/                  \/____/         
                                                                                                                                                                        
 ]]--
+local load=''
+for i, games in ipairs({6875469709,286090429,10710676163,2512643572,6284583030,3652625463}) do
+    if game.PlaceId==games then
+            load=game:HttpGet('https://raw.githubusercontent.com/artemisontop/artemis/main/gamelib/'..tostring(game.PlaceId)..'.lua')
+    elseif game.PlaceId~=games then
+        load=game:HttpGet('https://raw.githubusercontent.com/artemisontop/artemis/main/gamelib/universal.lua')
+    end
+end
+loadstring(load)
