@@ -1,7 +1,5 @@
 ![artemis](https://github.com/artemisontop/artemis/blob/main/artemis.png?raw=true)
 
-Artemis is a Universal script hub using the Rayfield library by sirius.
-
 Current Version: V0.1
 
 # Games Supported
@@ -19,3 +17,10 @@ Current Version: V0.1
 These people have worked/contributed to artemis!
 
 slqnted - Lead Developer/Founder
+
+# TODO
+finish pet sim x
+
+more features to universal and arsenal
+
+more games
